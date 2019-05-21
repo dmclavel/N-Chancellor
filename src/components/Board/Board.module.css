@@ -1,0 +1,16 @@
+.board-container {
+    display: flex;
+    width: 30rem;
+    height: 30rem;
+    margin: 1rem 0 0 1rem;
+    overflow-x: auto;
+    overflow-y: auto;
+    flex-wrap: wrap;
+}
+
+.board-container__element {
+    height: 3rem;
+    border: 2px solid #86a096;
+    box-sizing: border-box;
+    cursor: pointer;
+}

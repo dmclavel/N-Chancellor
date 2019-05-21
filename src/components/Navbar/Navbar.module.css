@@ -1,0 +1,23 @@
+.navbar {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 4rem;
+    background: #475C7A;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar__options {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    padding: 0.75rem;
+    background: #AB6C82;
+    margin: 0 1rem;
+    border-radius: 15px;
+}
+
+.navbar__options:hover {
+    cursor: pointer;
+    color: rgba(255,255,255,0.5);
+}
