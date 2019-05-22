@@ -27,7 +27,7 @@ const LeftSide = ({ board, updateBoard, show, createBoardByDimension, setShowFal
                 board.map((board, index) => (
                     <div className={classes["left-side-block__multiple-boards-block__inner-block"]}>
                         <span className={classes["left-side-block__multiple-boards-block__inner-block__text"]}> Board #{`${index+1}`} </span>
-                        <Board nChancellorBoard={board} repaint={updateBoard} editable={true} trimCase={true} />
+                        <Board nChancellorBoard={board} repaint={updateBoard} editable={false} trimCase={true} />
                         <Button style={{ display: board ? 'block' : 'none', margin: '1rem 0 0 1rem' }}
                                 clicked={() => solve(!fileType ? 'noFile' : 'file', board)} name={`Solve for Board #${index+1}`} />
                     </div>

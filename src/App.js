@@ -16,6 +16,7 @@ class App extends Component {
       solvingStarted: false,
       solvingDone: false,
       arraysOfSolution: null,
+      showSolutionsBoard: false,
       showDimensionInput: false,
       fileType: false,
       /* For Pagination */
@@ -36,19 +37,19 @@ class App extends Component {
     try {
       const returnValues = await readFile(file);
 
-      this.setState({ board: returnValues, fileType: true });
+      this.setState({ board: returnValues, fileType: true, arraysOfSolution: null,  showSolutionsBoard: false  });
     } catch (e) {
 
     }
   };
 
-  createBoardByDimension = (dimension) => {
+  createBoardByDimension = async (dimension) => {
     const arr = createByDimension(dimension);
     for (let i = 0; i < arr.length; i++)
       for (let j = 0; j < arr[0].length; j++)
         arr[i][j] = 0;
 
-    this.setState({ board: arr, fileType: false, limit: 50, arraysOfSolution: null, solvingStarted: false, solvingDone: false });
+    this.setState({ board: arr, fileType: false, limit: 50, solvingStarted: false, solvingDone: false, arraysOfSolution: null,  showSolutionsBoard: false });
   };
 
   solveNChancellorsProblem = async (type, specificBoard) => {
@@ -61,10 +62,10 @@ class App extends Component {
       await setTimeout(() => {  // Give enough time for render call to show backdrop
         begin_backtrack(this.state.board, this.state.board.length, type)
             .then(answer => {
-              this.setState({ arrayOfSolution: answer, solvingStarted: false, solvingDone: true });
+              this.setState({ arrayOfSolution: answer, solvingStarted: false, solvingDone: true,  showSolutionsBoard: true });
             })
             .catch(() => {
-              this.setState({ arrayOfSolution: [], solvingStarted: false, solvingDone: true });
+              this.setState({ arrayOfSolution: [], solvingStarted: false, solvingDone: true,  showSolutionsBoard: true });
             });
       }, 1000);
     }
@@ -72,22 +73,21 @@ class App extends Component {
       await setTimeout(() => {  // Give enough time for render call to show backdrop
         begin_backtrack(specificBoard, specificBoard.length, type)
             .then(answer => {
-              this.setState({ arrayOfSolution: answer, solvingStarted: false, solvingDone: true });
+              this.setState({ arrayOfSolution: answer, solvingStarted: false, solvingDone: true,  showSolutionsBoard: true });
             })
             .catch(() => {
-              console.log('Rejected');
-              this.setState({ arrayOfSolution: [], solvingStarted: false, solvingDone: true });
+              this.setState({ arrayOfSolution: [], solvingStarted: false, solvingDone: true,  showSolutionsBoard: true });
             });
       }, 1000);
     }
   };
 
   handleViewMore = () => {
-    this.setState(prevState => ({ limit: prevState.limit + prevState.limit  }));
+    this.setState(prevState => ({ limit: prevState.limit + 50  }));
   };
 
   render() {
-    const { board, showDimensionInput, arrayOfSolution, solvingStarted, solvingDone, limit, fileType } = this.state;
+    const { board, showDimensionInput, arrayOfSolution, solvingStarted, solvingDone, limit, fileType,  showSolutionsBoard } = this.state;
     const backdropInline = { display: solvingStarted && !solvingDone ? 'block' : 'none', width: '100%', height: '100%' };
 
     return (
@@ -96,7 +96,7 @@ class App extends Component {
         <LeftSide   createBoardByDimension={(dimension) => this.createBoardByDimension(dimension)}
                     solve={(type, board) => this.solveNChancellorsProblem(type, board)} fileType={fileType}
                     board={board} updateBoard={this.updateBoard} editable={true} show={showDimensionInput} setShowFalse={() => this.setState({ showDimensionInput: false })} />
-        <RightSide solutionsBoard={arrayOfSolution} limit={limit} viewMore={this.handleViewMore} />
+        <RightSide solutionsBoard={arrayOfSolution} limit={limit} viewMore={this.handleViewMore}  showSolutionsBoard={ showSolutionsBoard}  />
         <Backdrop style={backdropInline} />
         <Loader style={{ display: solvingStarted && !solvingDone ? 'flex' : 'none' }} />
       </Fragment>
